@@ -1,20 +1,20 @@
-# Hugo Demont Portfolio
+# Hugo Demont - Portfolio 3D interactif
 
 ## 🚀 Introduction
 
-Ce projet est un portfolio interactif en 3D où les utilisateurs explorent un environnement brumeux et mystérieux, inspiré des anciens jeux PSX (PlayStation 1). Ils doivent se déplacer dans cet univers pour découvrir mes informations, telles que mes compétences, mes projets, et mon parcours.
+Bienvenue sur mon portfolio 3D interactif, conçu pour offrir une expérience immersive et unique. Inspiré par l'esthétique rétro des anciens jeux PSX (PlayStation 1)C'est un projet qui propose un environnement mystérieux et brumeux où les visiteurs doivent explorer pour découvrir mes compétences, projets, et mon parcours professionnel.
 
-Ce guide a pour objectif de t’expliquer comment tu peux, toi aussi, créer un portfolio immersif similaire, en utilisant **Blender** pour modéliser des objets 3D, **Three.js** pour gérer la scène et **Vite** pour optimiser les performances du site.
+L'objectif de ce projet est de sortir des sentiers battus des portfolios classiques en créant une expérience de jeu nostalgique tout en utilisant des technologies modernes du web.
 
 ---
 
 ## 🎨 Pourquoi ce concept ?
 
-1. **Originalité et immersion** : Un portfolio en 3D avec une expérience d'exploration engage les visiteurs de manière unique, tout en offrant une façon ludique de découvrir des informations sur ton parcours professionnel.
-   
-2. **Esthétique rétro PSX** : L'utilisation de modèles low-poly et d’effets visuels simples rappelle les graphismes des anciens jeux vidéo PlayStation 1, ce qui apporte une touche artistique nostalgique et unique.
+1. **Un portfolio immersif et engageant** : Plutôt que de simplement faire défiler des pages, ce portfolio invite les utilisateurs à se déplacer et à explorer un environnement interactif. Chaque section du site devient une découverte, permettant une interaction plus ludique avec mon contenu.
 
-3. **Technologies Web modernes** : Utiliser **Three.js** permet de gérer la complexité des graphiques 3D directement dans le navigateur, et **Vite** assure une performance maximale avec un développement rapide.
+2. **Esthétique PSX nostalgique** : L'utilisation de modèles low-poly avec des textures détaillées rappelle les graphismes des jeux PlayStation 1. Cette approche, couplée à une brume mystérieuse, ajoute une ambiance rétro et unique à l'expérience utilisateur.
+
+3. **Technologies Web modernes** : Le projet utilise **Three.js** pour gérer les objets 3D, les animations et les effets visuels. Associé à **Vite**, il garantit des performances optimisées tout en accélérant le développement. Mon but est de démontrer mes compétences dans l'utilisation d'outils de pointe tout en créant une expérience fluide.
 
 ---
 
@@ -22,72 +22,61 @@ Ce guide a pour objectif de t’expliquer comment tu peux, toi aussi, créer un 
 
 | Technologie | Description |
 |-------------|-------------|
-| ![Three.js]([https://cdn.jsdelivr.net/npm/simple-icons@v7/icons/three.js.svg](https://global.discourse-cdn.com/standard17/uploads/threejs/original/2X/e/e4f86d2200d2d35c30f7b1494e96b9595ebc2751.png)) **[Three.js](https://threejs.org/)** | Une bibliothèque JavaScript qui permet de créer des graphiques 3D dans le navigateur. Elle offre des outils pour gérer les objets 3D, les caméras, les lumières, et bien plus encore. |
-| ![Vite](https://cdn.jsdelivr.net/npm/simple-icons@v7/icons/vite.svg) **[Vite](https://vitejs.dev/)** | Un bundler ultra rapide qui optimise le développement et la performance des applications JavaScript modernes. |
-| ![Blender](https://cdn.jsdelivr.net/npm/simple-icons@v7/icons/blender.svg) **[Blender](https://www.blender.org/)** | Un logiciel de création 3D gratuit et open-source utilisé pour modéliser les objets 3D que tu intègreras dans Three.js. |
-| ![GLSL](https://cdn.jsdelivr.net/npm/simple-icons@v7/icons/opengl.svg) **GLSL** | Un langage de shading pour écrire des shaders personnalisés qui permettent de créer des effets visuels comme la brume ou les ombrages dans Three.js. |
+| ![Three.js](https://global.discourse-cdn.com/standard17/uploads/threejs/original/2X/e/e4f86d2200d2d35c30f7b1494e96b9595ebc2751.png) **[Three.js](https://threejs.org/)** | Une bibliothèque JavaScript permettant de créer des graphiques 3D complexes et interactifs dans le navigateur. |
+| ![Vite](https://cdn.jsdelivr.net/npm/simple-icons@v7/icons/vite.svg) **[Vite](https://vitejs.dev/)** | Un bundler ultra-rapide qui améliore les performances et simplifie le développement d'applications modernes. |
+| ![Blender](https://cdn.jsdelivr.net/npm/simple-icons@v7/icons/blender.svg) **[Blender](https://www.blender.org/)** | Utilisé pour modéliser les objets 3D low-poly, avec des textures détaillées, afin de recréer l'esthétique des jeux PSX. |
+| ![GLSL](https://cdn.jsdelivr.net/npm/simple-icons@v7/icons/opengl.svg) **GLSL** | Un langage de shading pour les effets visuels comme la brume, les ombres ou encore l'éclairage dynamique pour renforcer l'immersion. |
 
 ---
 
 ## 🎮 Fonctionnalités principales du portfolio
 
-- **Exploration en 3D** : L'utilisateur doit se déplacer à travers une scène interactive pour découvrir les informations sur le portfolio.
-- **Effet de brume mystérieuse** : Utilisation de shaders pour ajouter une atmosphère brumeuse, créant une ambiance immersive.
-- **Objets low-poly inspirés de l’esthétique PSX** : Les objets du portfolio (comme des bâtiments, des arbres, etc.) sont modélisés dans un style simple, rappelant les graphismes des jeux PlayStation 1.
-- **Performance optimisée** : Grâce à Vite, le chargement des assets est rapide, et les interactions 3D restent fluides même sur des machines moins performantes.
+- **Exploration interactive en 3D** : Les utilisateurs doivent se déplacer à travers une scène en 3D pour découvrir les différentes sections du portfolio (mes compétences, projets, etc.).
+- **Ambiance brumeuse et mystérieuse** : Des shaders personnalisés recréent l’effet de brume qui enveloppe l’environnement, inspiré des jeux PSX.
+- **Objets low-poly et textures détaillées** : Tous les objets sont modélisés en low-poly avec des textures pixelisées qui ajoutent du détail tout en maintenant un style PSX authentique.
+- **Performances optimisées avec Vite** : Grâce à Vite, le chargement et la fluidité du site sont maximisés, garantissant une expérience utilisateur fluide, même sur des appareils moins puissants.
 
 ---
 
-## 🔨 Comment recréer un portfolio 3D similaire ?
+## 📌 Ce qu'il reste à faire
 
-### 1. **Modélisation des objets 3D avec Blender**
+### 🔨 Liste des tâches restantes pour finaliser le projet :
 
-**Blender** est l'outil principal pour créer des objets 3D que tu vas intégrer dans ton portfolio. Voici les étapes générales pour réaliser cela :
+#### 1. **Modélisation des objets dans Blender**
+   - [ ] Créer les modèles de base (arbres, bâtiments).
+   - [ ] Ajouter des détails supplémentaires dans les textures.
+   - [ ] Optimiser les UV maps pour minimiser la taille des fichiers.
+   
+#### 2. **Scène 3D dans Three.js**
+   - [x] Importer les objets 3D dans la scène.
+   - [ ] Configurer la caméra et les contrôles pour permettre la navigation.
+   - [ ] Ajouter des animations (comme les interactions avec les objets).
+   - [ ] Affiner l’effet de brume (intensité et distance).
 
-- **Modélisation low-poly** : Choisis un style graphique simple avec des formes géométriques basiques et peu de polygones. Cela permettra de conserver une esthétique rétro tout en assurant de bonnes performances.
-- **Texture pixelisée** : Crée des textures à basse résolution pour évoquer l'aspect pixelisé des anciens jeux vidéo. Tu peux les créer directement dans Blender ou avec un logiciel comme **GIMP** ou **Photoshop**.
-- **Optimisation** : Réduis le nombre de polygones et optimise les UV maps pour minimiser le poids des fichiers, ce qui est crucial pour des performances fluides dans un environnement Web.
-- **Exportation** : Une fois ton modèle prêt, exporte-le en **format glTF** ou **OBJ**, car ces formats sont largement supportés par **Three.js** et sont faciles à manipuler.
+#### 3. **Shaders et effets visuels**
+   - [x] Implémenter le shader de brume.
+   - [ ] Créer des ombres dynamiques pour les objets de la scène.
+   - [ ] Ajouter un shader pour l’effet de lumière PSX (lumière simple et pixellisée).
 
-### 2. **Création de la scène 3D avec Three.js**
+#### 4. **Optimisation avec Vite**
+   - [ ] Configurer Vite pour améliorer les temps de chargement.
+   - [ ] Compresser et optimiser les assets 3D et les textures.
+   - [ ] Tester les performances sur différents appareils et navigateurs.
 
-Après avoir créé et exporté tes modèles 3D avec Blender, tu devras les intégrer dans une scène 3D avec **Three.js**.
-
-- **Ajout des objets 3D** : Utilise **Three.js** pour importer et afficher tes modèles dans la scène. Tu pourras les positionner, les animer, et ajouter des interactions pour que l'utilisateur puisse explorer ton portfolio.
-- **Brume et lumières** : Crée une atmosphère brumeuse pour ajouter une touche mystérieuse à ton environnement. Utilise les fonctionnalités intégrées de Three.js pour gérer la lumière de la scène et jouer avec les ombrages et la brume pour obtenir un effet PSX authentique.
-- **Contrôles utilisateur** : Permets à l'utilisateur de se déplacer dans la scène à l'aide de contrôles interactifs (par exemple, navigation à la première personne ou à la troisième personne, en fonction de l'expérience souhaitée).
-
-### 3. **Utilisation de shaders pour les effets visuels**
-
-Pour rendre ton portfolio encore plus immersif, tu peux ajouter des **shaders** personnalisés avec **GLSL**. Les shaders te permettront de créer des effets visuels avancés comme :
-
-- **Brume dynamique** : Pour ajouter de la profondeur à la scène et rendre l’exploration plus intrigante, la brume peut être gérée avec un shader qui modifie son intensité en fonction de la distance.
-- **Effets de lumière rétro** : Utilise des shaders pour imiter des effets de lumière simples et anguleux typiques des premiers jeux en 3D.
-
-### 4. **Optimiser le développement et les performances avec Vite**
-
-**Vite** est un outil essentiel pour garantir que ton projet est rapide, à la fois en développement et en production. Voici quelques raisons d'utiliser Vite :
-
-- **Hot-reload ultra rapide** : Chaque modification de ton code est instantanément reflétée dans le navigateur, ce qui accélère le développement.
-- **Optimisation des assets** : Vite optimise automatiquement les fichiers JavaScript et les fichiers 3D pour réduire le temps de chargement de la page.
-- **Facilité d'intégration avec Three.js** : Vite se configure très facilement avec Three.js, ce qui te permet de te concentrer sur la création de contenu sans avoir à t’inquiéter de la configuration complexe.
-
----
-
-## 🔧 Quelques conseils pratiques
-
-- **Test de performances** : Avant de publier ton portfolio, teste-le sur plusieurs appareils (PC, mobiles, tablettes) pour t'assurer que la scène reste fluide. La 3D peut rapidement devenir lourde à charger si les modèles ne sont pas optimisés.
-- **Expérience utilisateur (UX)** : Pense à la manière dont l’utilisateur navigue dans ton portfolio. Assure-toi que les contrôles de déplacement soient simples et intuitifs pour éviter toute frustration.
-- **Minimalisme** : N’ajoute pas trop d’objets ou de détails inutiles dans la scène. Reste fidèle à l'esthétique minimaliste pour garantir des performances optimales et ne pas surcharger l’utilisateur.
+#### 5. **Expérience utilisateur et contenu**
+   - [ ] Structurer le contenu du portfolio à découvrir (mes compétences, projets, etc.).
+   - [ ] Ajouter des indicateurs visuels pour guider l’utilisateur à travers la scène.
+   - [ ] Finaliser le design de l’interface utilisateur (boutons, menus).
+   - [ ] Intégrer des textes et informations dans des points spécifiques du monde 3D.
 
 ---
 
 ## 🎯 Conclusion
 
-En créant un portfolio 3D avec **Blender** pour la modélisation, **Three.js** pour l'intégration des objets 3D, et **Vite** pour l'optimisation des performances, tu offres une expérience unique qui engage les visiteurs tout en démontrant tes compétences techniques. Un projet comme celui-ci montre non seulement ta créativité, mais aussi ta maîtrise des outils modernes de développement Web.
+Ce projet de portfolio 3D est un excellent exemple d’alliance entre technologies modernes (Three.js, Vite) et esthétique rétro (PSX). En tant que développeur, mon objectif est de repousser les limites du web interactif, et ce projet est une démonstration de mes compétences en conception 3D, en développement web, et en création d’expériences immersives.
 
 ---
 
 ## 📜 À propos de moi
 
-Je suis un développeur passionné par la création d'expériences interactives sur le web. J'aime repousser les limites de ce qu'il est possible de faire avec des technologies comme **Three.js** et j’explore toujours de nouvelles manières de rendre les sites plus immersifs et captivants.
+Je suis Hugo Demont, un développeur passionné par la création d'expériences interactives et immersives sur le web. J’aime explorer les possibilités offertes par des technologies comme **Three.js** et **Blender** pour créer des projets qui captivent l'utilisateur tout en démontrant ma créativité et mes compétences techniques.

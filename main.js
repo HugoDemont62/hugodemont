@@ -121,26 +121,32 @@ function updateModelPosition() {
 
 function updateCameraPosition() {
   if (model) {
-    const offset = new THREE.Vector3();
-    const sphericalOffset = new THREE.Spherical(distanceFromPlayer, Math.PI / 2 - targetCameraRotation.y, targetCameraRotation.x);
-
-    offset.setFromSpherical(sphericalOffset);
     const modelPosition = new THREE.Vector3();
     model.getWorldPosition(modelPosition);
 
-    camera.position.copy(modelPosition).add(cameraOffset).add(offset);
+    const sphericalOffset = new THREE.Spherical(distanceFromPlayer, Math.PI / 2 - targetCameraRotation.y, targetCameraRotation.x);
+
+    const offset = new THREE.Vector3();
+    offset.setFromSpherical(sphericalOffset);
+
+    const cameraHeightOffset = new THREE.Vector3(0, 1.5, 0);
+
+    camera.position.copy(modelPosition).add(offset).add(cameraHeightOffset);
+
     camera.lookAt(modelPosition);
   }
 }
+
 
 document.addEventListener('mousemove', (event) => {
   if (document.pointerLockElement) {
     targetCameraRotation.x -= event.movementX * 0.005;
     targetCameraRotation.y -= event.movementY * 0.005;
 
-    targetCameraRotation.y = Math.max(-Math.PI / 6, Math.min(Math.PI / 6, targetCameraRotation.y));
+    targetCameraRotation.y = Math.max(-Math.PI / 3, Math.min(Math.PI / 3, targetCameraRotation.y));
   }
 });
+
 
 document.addEventListener('click', () => {
   document.body.requestPointerLock();

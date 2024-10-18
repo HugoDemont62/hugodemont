@@ -22,7 +22,7 @@ Ce guide a pour objectif de t’expliquer comment tu peux, toi aussi, créer un 
 
 | Technologie | Description |
 |-------------|-------------|
-| ![Three.js](https://cdn.jsdelivr.net/npm/simple-icons@v7/icons/three.js.svg) **[Three.js](https://threejs.org/)** | Une bibliothèque JavaScript qui permet de créer des graphiques 3D dans le navigateur. Elle offre des outils pour gérer les objets 3D, les caméras, les lumières, et bien plus encore. |
+| ![Three.js]([https://cdn.jsdelivr.net/npm/simple-icons@v7/icons/three.js.svg](https://global.discourse-cdn.com/standard17/uploads/threejs/original/2X/e/e4f86d2200d2d35c30f7b1494e96b9595ebc2751.png)) **[Three.js](https://threejs.org/)** | Une bibliothèque JavaScript qui permet de créer des graphiques 3D dans le navigateur. Elle offre des outils pour gérer les objets 3D, les caméras, les lumières, et bien plus encore. |
 | ![Vite](https://cdn.jsdelivr.net/npm/simple-icons@v7/icons/vite.svg) **[Vite](https://vitejs.dev/)** | Un bundler ultra rapide qui optimise le développement et la performance des applications JavaScript modernes. |
 | ![Blender](https://cdn.jsdelivr.net/npm/simple-icons@v7/icons/blender.svg) **[Blender](https://www.blender.org/)** | Un logiciel de création 3D gratuit et open-source utilisé pour modéliser les objets 3D que tu intègreras dans Three.js. |
 | ![GLSL](https://cdn.jsdelivr.net/npm/simple-icons@v7/icons/opengl.svg) **GLSL** | Un langage de shading pour écrire des shaders personnalisés qui permettent de créer des effets visuels comme la brume ou les ombrages dans Three.js. |

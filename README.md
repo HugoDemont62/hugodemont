@@ -22,10 +22,10 @@ L'objectif de ce projet est de sortir des sentiers battus des portfolios classiq
 
 | Technologie | Description |
 |-------------|-------------|
-| ![Three.js](https://global.discourse-cdn.com/standard17/uploads/threejs/original/2X/e/e4f86d2200d2d35c30f7b1494e96b9595ebc2751.png) **[Three.js](https://threejs.org/)** | Une bibliothèque JavaScript permettant de créer des graphiques 3D complexes et interactifs dans le navigateur. |
-| ![Vite](https://cdn.jsdelivr.net/npm/simple-icons@v7/icons/vite.svg) **[Vite](https://vitejs.dev/)** | Un bundler ultra-rapide qui améliore les performances et simplifie le développement d'applications modernes. |
-| ![Blender](https://cdn.jsdelivr.net/npm/simple-icons@v7/icons/blender.svg) **[Blender](https://www.blender.org/)** | Utilisé pour modéliser les objets 3D low-poly, avec des textures détaillées, afin de recréer l'esthétique des jeux PSX. |
-| ![GLSL](https://cdn.jsdelivr.net/npm/simple-icons@v7/icons/opengl.svg) **GLSL** | Un langage de shading pour les effets visuels comme la brume, les ombres ou encore l'éclairage dynamique pour renforcer l'immersion. |
+| **[Three.js](https://threejs.org/)** | Une bibliothèque JavaScript permettant de créer des graphiques 3D complexes et interactifs dans le navigateur. |
+| **[Vite](https://vitejs.dev/)** | Un bundler ultra-rapide qui améliore les performances et simplifie le développement d'applications modernes. |
+| **[Blender](https://www.blender.org/)** | Utilisé pour modéliser les objets 3D low-poly, avec des textures détaillées, afin de recréer l'esthétique des jeux PSX. |
+| **GLSL** | Un langage de shading pour les effets visuels comme la brume, les ombres ou encore l'éclairage dynamique pour renforcer l'immersion. |
 
 ---
 

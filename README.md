@@ -80,3 +80,5 @@ Ce projet de portfolio 3D est un excellent exemple d’alliance entre technologi
 ## 📜 À propos de moi
 
 Je suis Hugo Demont, un développeur passionné par la création d'expériences interactives et immersives sur le web. J’aime explorer les possibilités offertes par des technologies comme **Three.js** et **Blender** pour créer des projets qui captivent l'utilisateur tout en démontrant ma créativité et mes compétences techniques.
+
+Merci !

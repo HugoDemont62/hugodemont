@@ -1,38 +1,20 @@
 import './style.css';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockControls.js';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import * as dat from 'dat.gui';
 
-// Set up the scene
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(30, window.innerWidth / window.innerHeight, 0.1, 50);
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100);
 
-// Position the camera further back and at an angle
-camera.position.set(0, 5, 10);
-camera.lookAt(0, 0, 0);
+let cameraOffset = new THREE.Vector3(1.5, 3, -5);
+let targetCameraRotation = new THREE.Vector2();
+let distanceFromPlayer = 4;
 
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
-// Set up PointerLockControls
-const pointerControls = new PointerLockControls(camera, document.body);
-document.addEventListener('click', () => {
-  pointerControls.lock();
-}, false);
-
-scene.add(pointerControls.getObject());
-
-// Set up OrbitControls
-const orbitControls = new OrbitControls(camera, renderer.domElement);
-orbitControls.enableDamping = true;
-orbitControls.dampingFactor = 0.25;
-orbitControls.screenSpacePanning = false;
-orbitControls.maxPolarAngle = Math.PI / 2;
-
-// Add lighting
+// Lumières
 const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
 scene.add(ambientLight);
 
@@ -40,79 +22,53 @@ const directionalLight = new THREE.DirectionalLight(0xeeffbe, 1);
 directionalLight.position.set(5, 10, 7.5);
 scene.add(directionalLight);
 
-// Load the ground texture
+// Chargement de la texture du sol
 const textureLoader = new THREE.TextureLoader();
 const groundTexture = textureLoader.load('./public/th.jfif');
 groundTexture.wrapS = THREE.RepeatWrapping;
 groundTexture.wrapT = THREE.RepeatWrapping;
 groundTexture.repeat.set(10, 10);
 
-// Create the ground plane
+// Création du sol
 const groundGeometry = new THREE.PlaneGeometry(100, 100);
 const groundMaterial = new THREE.MeshStandardMaterial({ map: groundTexture });
 const ground = new THREE.Mesh(groundGeometry, groundMaterial);
 ground.rotation.x = -Math.PI / 2;
 scene.add(ground);
 
+// Chargement des modèles 3D
 const loader = new GLTFLoader();
-let building, model, mixer;
+let model, mixer;
 const gui = new dat.GUI();
 const options = {
-  showBuilding: true,
   showModel: true
 };
-
-loader.load('./public/psx_building.glb', (gltf) => {
-  building = gltf.scene;
-  scene.add(building);
-  building.position.set(0, 0, -3);
-
-  const buildingBox = new THREE.BoxHelper(building, 0xff0000);
-  scene.add(buildingBox);
-}, undefined, (error) => {
-  console.error('An error occurred while loading the building model:', error);
-});
 
 loader.load('./public/xander_model_character_man_rigged_realisitc.glb', (gltf) => {
   model = gltf.scene;
   scene.add(model);
 
-  // Add collision box for the character model
-  const modelBox = new THREE.BoxHelper(model, 0x00ff00);
-  modelBox.update();
-  scene.add(modelBox);
-
-  // Center the collision box around the model
-  const box = new THREE.Box3().setFromObject(model);
-  const boxCenter = box.getCenter(new THREE.Vector3());
-  modelBox.position.copy(boxCenter);
-
-  // Remove animation setup
+  mixer = new THREE.AnimationMixer(model);
 }, undefined, (error) => {
-  console.error('An error occurred while loading the character model:', error);
+  console.error('Une erreur s\'est produite lors du chargement du modèle de personnage :', error);
 });
 
-// Add GUI controls
-gui.add(options, 'showBuilding').name('Show Building').onChange((value) => {
-  if (building) building.visible = value;
-});
-gui.add(options, 'showModel').name('Show Model').onChange((value) => {
+gui.add(options, 'showModel').name('Afficher Modèle').onChange((value) => {
   if (model) model.visible = value;
 });
 
-// Movement controls
 const moveSpeed = 0.1;
 const move = { forward: false, backward: false, left: false, right: false };
 
 document.addEventListener('keydown', (event) => {
   switch (event.code) {
-    case 'KeyZ':
+    case 'KeyW':
       move.forward = true;
       break;
     case 'KeyS':
       move.backward = true;
       break;
-    case 'KeyQ':
+    case 'KeyA':
       move.left = true;
       break;
     case 'KeyD':
@@ -123,13 +79,13 @@ document.addEventListener('keydown', (event) => {
 
 document.addEventListener('keyup', (event) => {
   switch (event.code) {
-    case 'KeyZ':
+    case 'KeyW':
       move.forward = false;
       break;
     case 'KeyS':
       move.backward = false;
       break;
-    case 'KeyQ':
+    case 'KeyA':
       move.left = false;
       break;
     case 'KeyD':
@@ -138,16 +94,66 @@ document.addEventListener('keyup', (event) => {
   }
 });
 
+const clock = new THREE.Clock();
+
+function updateModelPosition() {
+  if (model) {
+    const direction = new THREE.Vector3();
+    camera.getWorldDirection(direction);
+    direction.y = 0;
+    direction.normalize();
+
+    const right = new THREE.Vector3();
+    right.crossVectors(camera.up, direction).normalize();
+
+    // Déplacement en fonction des touches appuyées
+    if (move.forward) model.position.addScaledVector(direction, moveSpeed);
+    if (move.backward) model.position.addScaledVector(direction, -moveSpeed);
+    if (move.left) model.position.addScaledVector(right, -moveSpeed);
+    if (move.right) model.position.addScaledVector(right, moveSpeed);
+
+    if (move.forward || move.backward || move.left || move.right) {
+      model.lookAt(model.position.clone().add(direction));
+    }
+  }
+}
+
+
+function updateCameraPosition() {
+  if (model) {
+    const offset = new THREE.Vector3();
+    const sphericalOffset = new THREE.Spherical(distanceFromPlayer, Math.PI / 2 - targetCameraRotation.y, targetCameraRotation.x);
+
+    offset.setFromSpherical(sphericalOffset);
+    const modelPosition = new THREE.Vector3();
+    model.getWorldPosition(modelPosition);
+
+    camera.position.copy(modelPosition).add(cameraOffset).add(offset);
+    camera.lookAt(modelPosition);
+  }
+}
+
+document.addEventListener('mousemove', (event) => {
+  if (document.pointerLockElement) {
+    targetCameraRotation.x -= event.movementX * 0.005;
+    targetCameraRotation.y -= event.movementY * 0.005;
+
+    targetCameraRotation.y = Math.max(-Math.PI / 6, Math.min(Math.PI / 6, targetCameraRotation.y));
+  }
+});
+
+document.addEventListener('click', () => {
+  document.body.requestPointerLock();
+});
+
 function animate() {
   requestAnimationFrame(animate);
 
-  if (move.forward) pointerControls.moveForward(moveSpeed);
-  if (move.backward) pointerControls.moveForward(-moveSpeed);
-  if (move.left) pointerControls.moveRight(-moveSpeed);
-  if (move.right) pointerControls.moveRight(moveSpeed);
+  const delta = clock.getDelta();
+  if (mixer) mixer.update(delta);
 
-  orbitControls.update();
-  if (mixer) mixer.update(0.01);
+  updateModelPosition();
+  updateCameraPosition();
   renderer.render(scene, camera);
 }
 

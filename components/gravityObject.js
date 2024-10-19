@@ -21,7 +21,7 @@ class GravityObject {
 
   jump() {
     if (!this.isJumping) {
-      this.velocity.y = 5; // Adjust the jump strength as needed
+      this.velocity.y = 5;
       this.isJumping = true;
     }
   }

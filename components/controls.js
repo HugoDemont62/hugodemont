@@ -1,4 +1,4 @@
-const move = { forward: false, backward: false, left: false, right: false, jump: false };
+const move = { forward: false, backward: false, left: false, right: false, jump: false, run: false };
 
 function setupControls() {
   document.addEventListener('keydown', (event) => {
@@ -17,6 +17,9 @@ function setupControls() {
         break;
       case 'Space':
         move.jump = true;
+        break;
+      case 'ShiftLeft':
+        move.run = true;
         break;
     }
   });
@@ -37,6 +40,9 @@ function setupControls() {
         break;
       case 'Space':
         move.jump = false;
+        break;
+      case 'ShiftLeft':
+        move.run = false;
         break;
     }
   });

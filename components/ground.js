@@ -26,7 +26,7 @@ function createGround(scene) {
     const data = context.getImageData(0, 0, size, size).data;
 
     for (let i = 0, j = 0; i < data.length; i += 4, j += 3) {
-      vertices[j + 2] = data[i] / 255;
+      vertices[j + 2] = (data[i] / 255) * 50;
     }
 
     groundGeometry.attributes.position.needsUpdate = true;

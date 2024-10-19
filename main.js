@@ -1,3 +1,4 @@
+// main.js
 import './style.css';
 import * as THREE from 'three';
 import * as dat from 'dat.gui';
@@ -6,6 +7,7 @@ import { setupLighting } from './components/lighting.js';
 import { loadCharacter } from './components/character.js';
 import { setupStats } from './components/stats.js';
 import { createGround } from './components/ground.js';
+import { updateStamina, canRun, canJump } from './components/stamina.js'; // Import the stamina functions
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100);
@@ -49,7 +51,7 @@ setupControls();
 
 const clock = new THREE.Clock();
 
-function updateModelPosition() {
+function updateModelPosition(delta) {
   gravityObjects.forEach(obj => {
     const model = obj.model;
     const direction = new THREE.Vector3();
@@ -60,16 +62,23 @@ function updateModelPosition() {
     const right = new THREE.Vector3();
     right.crossVectors(camera.up, direction).normalize();
 
-    if (move.forward) model.position.addScaledVector(direction, 0.1);
-    if (move.backward) model.position.addScaledVector(direction, -0.1);
-    if (move.left) model.position.addScaledVector(right, -0.1);
-    if (move.right) model.position.addScaledVector(right, 0.1);
+    let speed = 0.1;
+    if (move.run && canRun()) {
+      speed = 0.2;
+    } else if (move.run && !canRun()) {
+      speed = 0;
+    }
+
+    if (move.forward) model.position.addScaledVector(direction, speed);
+    if (move.backward) model.position.addScaledVector(direction, -speed);
+    if (move.left) model.position.addScaledVector(right, -speed);
+    if (move.right) model.position.addScaledVector(right, speed);
 
     if (move.forward || move.backward || move.left || move.right) {
       model.lookAt(model.position.clone().add(direction));
     }
 
-    if (move.jump) {
+    if (move.jump && canJump()) {
       obj.jump();
     }
   });
@@ -112,8 +121,9 @@ setupStats();
 function animate() {
   const delta = clock.getDelta();
   gravityObjects.forEach(obj => obj.applyGravity(delta));
-  updateModelPosition();
+  updateModelPosition(delta);
   updateCameraPosition();
+  updateStamina(delta, move.run, move.jump);
   renderer.render(scene, camera);
 
   if (gravityObjects.length > 0) {

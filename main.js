@@ -1,13 +1,11 @@
 import './style.css';
 import * as THREE from 'three';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import * as dat from 'dat.gui';
-import Stats from 'stats.js';
-import GravityObject from './components/gravityObject.js';
 import { move, setupControls } from './components/controls.js';
 import { setupLighting } from './components/lighting.js';
-import { createGround } from './components/ground.js';
+import { loadCharacter } from './components/character.js';
 import { setupStats } from './components/stats.js';
+import { createGround } from './components/ground.js';
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100);
@@ -23,16 +21,8 @@ document.body.appendChild(renderer.domElement);
 setupLighting(scene);
 createGround(scene);
 
-const loader = new GLTFLoader();
 let gravityObjects = [];
-loader.load('./public/xander_model_character_man_rigged_realisitc.glb', (gltf) => {
-  const model = gltf.scene;
-  scene.add(model);
-  const gravityObject = new GravityObject(model);
-  gravityObjects.push(gravityObject);
-}, undefined, (error) => {
-  console.error('Une erreur s\'est produite lors du chargement du modèle de personnage :', error);
-});
+loadCharacter(scene, gravityObjects);
 
 const gui = new dat.GUI();
 const options = {

@@ -1,4 +1,3 @@
-// controls.js
 const move = { forward: false, backward: false, left: false, right: false };
 
 function setupControls() {

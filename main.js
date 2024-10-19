@@ -15,6 +15,7 @@ const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerH
 let cameraOffset = new THREE.Vector3(1.5, 3, -5);
 let targetCameraRotation = new THREE.Vector2();
 let distanceFromPlayer = 4;
+let isFirstPerson = false; // Track camera mode
 
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -74,7 +75,7 @@ function updateModelPosition(delta) {
     if (move.left) model.position.addScaledVector(right, -speed);
     if (move.right) model.position.addScaledVector(right, speed);
 
-    if (move.forward || move.backward || move.left || move.right) {
+    if (!isFirstPerson && (move.forward || move.backward || move.left || move.right)) {
       model.lookAt(model.position.clone().add(direction));
     }
 
@@ -90,16 +91,18 @@ function updateCameraPosition() {
     const modelPosition = new THREE.Vector3();
     model.getWorldPosition(modelPosition);
 
-    const sphericalOffset = new THREE.Spherical(distanceFromPlayer, Math.PI / 2 - targetCameraRotation.y, targetCameraRotation.x);
-
-    const offset = new THREE.Vector3();
-    offset.setFromSpherical(sphericalOffset);
-
-    const cameraHeightOffset = new THREE.Vector3(0, 3, 0);
-
-    camera.position.copy(modelPosition).add(offset).add(cameraHeightOffset);
-
-    camera.lookAt(modelPosition);
+    if (isFirstPerson) {
+      camera.position.copy(modelPosition).add(new THREE.Vector3(0, 1, 0));
+      model.visible = false;
+    } else {
+      model.visible = true;
+      const sphericalOffset = new THREE.Spherical(distanceFromPlayer, Math.PI / 2 - targetCameraRotation.y, targetCameraRotation.x);
+      const offset = new THREE.Vector3();
+      offset.setFromSpherical(sphericalOffset);
+      const cameraHeightOffset = new THREE.Vector3(0, 3, 0);
+      camera.position.copy(modelPosition).add(offset).add(cameraHeightOffset);
+      camera.lookAt(modelPosition);
+    }
   }
 }
 
@@ -109,6 +112,12 @@ document.addEventListener('mousemove', (event) => {
     targetCameraRotation.y -= event.movementY * 0.001;
 
     targetCameraRotation.y = Math.max(-Math.PI / 3, Math.min(Math.PI / 3, targetCameraRotation.y));
+
+    if (isFirstPerson) {
+      camera.rotation.order = 'YXZ';
+      camera.rotation.y = targetCameraRotation.x;
+      camera.rotation.x = targetCameraRotation.y;
+    }
   }
 });
 
@@ -124,6 +133,12 @@ function animate() {
   updateModelPosition(delta);
   updateCameraPosition();
   updateStamina(delta, move.run, move.jump);
+
+  if (move.toggleCamera) {
+    isFirstPerson = !isFirstPerson;
+    move.toggleCamera = false;
+  }
+
   renderer.render(scene, camera);
 
   if (gravityObjects.length > 0) {

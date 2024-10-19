@@ -1,4 +1,5 @@
-const move = { forward: false, backward: false, left: false, right: false, jump: false, run: false };
+const move = { forward: false, backward: false, left: false, right: false, jump: false, run: false, toggleCamera: false };
+let cameraTogglePressed = false;
 
 function setupControls() {
   document.addEventListener('keydown', (event) => {
@@ -20,6 +21,12 @@ function setupControls() {
         break;
       case 'ShiftLeft':
         move.run = true;
+        break;
+      case 'KeyR':
+        if (!cameraTogglePressed) {
+          move.toggleCamera = true;
+          cameraTogglePressed = true;
+        }
         break;
     }
   });
@@ -43,6 +50,9 @@ function setupControls() {
         break;
       case 'ShiftLeft':
         move.run = false;
+        break;
+      case 'KeyR':
+        cameraTogglePressed = false;
         break;
     }
   });

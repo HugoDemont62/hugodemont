@@ -7,7 +7,7 @@ function createGround(scene) {
   groundTexture.wrapT = THREE.RepeatWrapping;
   groundTexture.repeat.set(10, 10);
 
-  const groundGeometry = new THREE.PlaneGeometry(10000, 10000);
+  const groundGeometry = new THREE.PlaneGeometry(100000, 100000);
   const groundMaterial = new THREE.MeshStandardMaterial({ map: groundTexture });
   const ground = new THREE.Mesh(groundGeometry, groundMaterial);
   ground.rotation.x = -Math.PI / 2;

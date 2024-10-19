@@ -56,6 +56,10 @@ function updateModelPosition() {
     if (move.forward || move.backward || move.left || move.right) {
       model.lookAt(model.position.clone().add(direction));
     }
+
+    if (move.jump) {
+      obj.jump();
+    }
   });
 }
 

@@ -70,6 +70,7 @@ function updateModelPosition(delta) {
 
     const right = new THREE.Vector3();
     right.crossVectors(camera.up, direction).normalize();
+    const left = right.clone().negate();
 
     let speed = 0.1;
     if (move.run && canRun()) {
@@ -80,11 +81,16 @@ function updateModelPosition(delta) {
 
     if (move.forward) model.position.addScaledVector(direction, speed);
     if (move.backward) model.position.addScaledVector(direction, -speed);
-    if (move.left) model.position.addScaledVector(right, -speed);
+    if (move.left) model.position.addScaledVector(left, -speed);
     if (move.right) model.position.addScaledVector(right, speed);
 
     if (!isFirstPerson && (move.forward || move.backward || move.left || move.right)) {
-      model.lookAt(model.position.clone().add(direction));
+      const moveDirection = new THREE.Vector3();
+      if (move.forward) moveDirection.add(direction);
+      if (move.backward) moveDirection.addScaledVector(direction, -1);
+      if (move.left) moveDirection.addScaledVector(left, 0);
+      if (move.right) moveDirection.add(right, 0);
+      model.lookAt(model.position.clone().add(moveDirection));
     }
 
     if (move.jump && canJump()) {

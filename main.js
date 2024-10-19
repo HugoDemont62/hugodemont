@@ -1,4 +1,3 @@
-// main.js
 import './style.css';
 import * as THREE from 'three';
 import * as dat from 'dat.gui';
@@ -7,7 +6,7 @@ import { setupLighting } from './components/lighting.js';
 import { loadCharacter } from './components/character.js';
 import { setupStats } from './components/stats.js';
 import { createGround } from './components/ground.js';
-import { updateStamina, canRun, canJump } from './components/stamina.js'; // Import the stamina functions
+import { updateStamina, canRun, canJump } from './components/stamina.js';
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100);
@@ -15,13 +14,12 @@ const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerH
 let cameraOffset = new THREE.Vector3(1.5, 3, -5);
 let targetCameraRotation = new THREE.Vector2();
 let distanceFromPlayer = 4;
-let isFirstPerson = false; // Track camera mode
+let isFirstPerson = false;
 
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
-// Add skybox
 const loader = new THREE.TextureLoader();
 const texture = loader.load('public/sky.jpg', () => {
   const rt = new THREE.WebGLCubeRenderTarget(texture.image.height);
@@ -30,7 +28,7 @@ const texture = loader.load('public/sky.jpg', () => {
 });
 
 setupLighting(scene);
-createGround(scene);
+const { updateTreesVisibility, treeBoxes } = createGround(scene);
 
 let gravityObjects = [];
 loadCharacter(scene, gravityObjects);
@@ -44,7 +42,6 @@ gui.add(options, 'showModel').name('Afficher Modèle').onChange((value) => {
   gravityObjects.forEach(obj => obj.model.visible = value);
 });
 
-// Add coordinates folder
 const coordinatesFolder = gui.addFolder('Coordinates');
 const coordinates = {
   X: 0,
@@ -79,17 +76,32 @@ function updateModelPosition(delta) {
       speed = 0;
     }
 
-    if (move.forward) model.position.addScaledVector(direction, speed);
-    if (move.backward) model.position.addScaledVector(direction, -speed);
-    if (move.left) model.position.addScaledVector(left, -speed);
-    if (move.right) model.position.addScaledVector(right, speed);
+    const newPosition = model.position.clone();
+
+    if (move.forward) newPosition.addScaledVector(direction, speed);
+    if (move.backward) newPosition.addScaledVector(direction, -speed);
+    if (move.left) newPosition.addScaledVector(left, speed);
+    if (move.right) newPosition.addScaledVector(right, speed);
+
+    // Check for collisions with trees
+    const modelBox = new THREE.Box3().setFromObject(model);
+    let collision = false;
+    treeBoxes.forEach(box => {
+      if (box.intersectsBox(modelBox)) {
+        collision = true;
+      }
+    });
+
+    if (!collision) {
+      model.position.copy(newPosition);
+    }
 
     if (!isFirstPerson && (move.forward || move.backward || move.left || move.right)) {
       const moveDirection = new THREE.Vector3();
       if (move.forward) moveDirection.add(direction);
       if (move.backward) moveDirection.addScaledVector(direction, -1);
-      if (move.left) moveDirection.addScaledVector(left, 0);
-      if (move.right) moveDirection.add(right, 0);
+      if (move.left) moveDirection.add(left);
+      if (move.right) moveDirection.add(right);
       model.lookAt(model.position.clone().add(moveDirection));
     }
 
@@ -128,7 +140,7 @@ document.addEventListener('mousemove', (event) => {
 
     targetCameraRotation.y = Math.max(-Math.PI / 3, Math.min(Math.PI / 3, targetCameraRotation.y));
 
-    camera.rotation.order = 'YXZ'; // Ensure correct rotation order
+    camera.rotation.order = 'YXZ';
     camera.rotation.y = targetCameraRotation.x;
     camera.rotation.x = targetCameraRotation.y;
   }
@@ -146,6 +158,7 @@ function animate() {
   updateModelPosition(delta);
   updateCameraPosition();
   updateStamina(delta, move.run, move.jump);
+  updateTreesVisibility(camera);
 
   if (move.toggleCamera) {
     isFirstPerson = !isFirstPerson;

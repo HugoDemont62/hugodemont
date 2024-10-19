@@ -63,9 +63,19 @@ function createGround(scene) {
         trees.push(tree);
         scene.add(tree);
 
-        // Create a bounding box for the tree
+        // Create a bounding box for the tree and scale it down
         const box = new THREE.Box3().setFromObject(tree);
+        const size = new THREE.Vector3();
+        box.getSize(size);
+        const scaledSize = size.multiplyScalar(0.5);
+        const center = new THREE.Vector3();
+        box.getCenter(center);
+        box.setFromCenterAndSize(center, scaledSize);
         treeBoxes.push(box);
+
+        // Create a BoxHelper to visualize the bounding box
+        const boxHelper = new THREE.BoxHelper(tree, 0xff0000); // Red color
+        scene.add(boxHelper);
       }
     }
   });
@@ -74,9 +84,11 @@ function createGround(scene) {
     const cameraPosition = new THREE.Vector3();
     camera.getWorldPosition(cameraPosition);
 
-    trees.forEach(tree => {
+    trees.forEach((tree, index) => {
       const distance = cameraPosition.distanceTo(tree.position);
       tree.visible = distance < 500;
+
+      treeBoxes[index].setFromObject(tree);
     });
   }
 

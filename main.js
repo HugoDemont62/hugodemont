@@ -21,6 +21,14 @@ const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
+// Add skybox
+const loader = new THREE.TextureLoader();
+const texture = loader.load('public/sky.jpg', () => {
+  const rt = new THREE.WebGLCubeRenderTarget(texture.image.height);
+  rt.fromEquirectangularTexture(renderer, texture);
+  scene.background = rt.texture;
+});
+
 setupLighting(scene);
 createGround(scene);
 
@@ -96,11 +104,12 @@ function updateCameraPosition() {
       model.visible = false;
     } else {
       model.visible = true;
-      const sphericalOffset = new THREE.Spherical(distanceFromPlayer, Math.PI / 2 - targetCameraRotation.y, targetCameraRotation.x);
-      const offset = new THREE.Vector3();
-      offset.setFromSpherical(sphericalOffset);
-      const cameraHeightOffset = new THREE.Vector3(0, 3, 0);
-      camera.position.copy(modelPosition).add(offset).add(cameraHeightOffset);
+
+      const offset = new THREE.Vector3(0, 2.2, -3);
+      offset.applyQuaternion(model.quaternion);
+      const targetPosition = modelPosition.clone().add(offset);
+      camera.position.lerp(targetPosition, 0.1);
+
       camera.lookAt(modelPosition);
     }
   }
@@ -113,11 +122,9 @@ document.addEventListener('mousemove', (event) => {
 
     targetCameraRotation.y = Math.max(-Math.PI / 3, Math.min(Math.PI / 3, targetCameraRotation.y));
 
-    if (isFirstPerson) {
-      camera.rotation.order = 'YXZ';
-      camera.rotation.y = targetCameraRotation.x;
-      camera.rotation.x = targetCameraRotation.y;
-    }
+    camera.rotation.order = 'YXZ'; // Ensure correct rotation order
+    camera.rotation.y = targetCameraRotation.x;
+    camera.rotation.x = targetCameraRotation.y;
   }
 });
 

@@ -33,6 +33,18 @@ gui.add(options, 'showModel').name('Afficher Modèle').onChange((value) => {
   gravityObjects.forEach(obj => obj.model.visible = value);
 });
 
+// Add coordinates folder
+const coordinatesFolder = gui.addFolder('Coordinates');
+const coordinates = {
+  X: 0,
+  Y: 0,
+  Z: 0,
+};
+coordinatesFolder.add(coordinates, 'X').listen();
+coordinatesFolder.add(coordinates, 'Y').listen();
+coordinatesFolder.add(coordinates, 'Z').listen();
+coordinatesFolder.open();
+
 setupControls();
 
 const clock = new THREE.Clock();
@@ -103,6 +115,14 @@ function animate() {
   updateModelPosition();
   updateCameraPosition();
   renderer.render(scene, camera);
+
+  if (gravityObjects.length > 0) {
+    const modelPosition = gravityObjects[0].model.position;
+    coordinates.X = modelPosition.x.toFixed(2);
+    coordinates.Y = modelPosition.y.toFixed(2);
+    coordinates.Z = modelPosition.z.toFixed(2);
+  }
+
   requestAnimationFrame(animate);
 }
 

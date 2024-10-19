@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 function createGround(scene) {
   const textureLoader = new THREE.TextureLoader();
@@ -10,7 +10,7 @@ function createGround(scene) {
   groundTexture.repeat.set(100, 100);
 
   const groundGeometry = new THREE.PlaneGeometry(1000, 1000, 256, 256);
-  const groundMaterial = new THREE.MeshStandardMaterial({map: groundTexture});
+  const groundMaterial = new THREE.MeshStandardMaterial({ map: groundTexture });
 
   heightMap.anisotropy = 16;
   heightMap.wrapS = THREE.RepeatWrapping;
@@ -36,6 +36,7 @@ function createGround(scene) {
 
   const ground = new THREE.Mesh(groundGeometry, groundMaterial);
   ground.rotation.x = -Math.PI / 2;
+  ground.receiveShadow = true;
   scene.add(ground);
 
   const treeLoader = new GLTFLoader();
@@ -53,6 +54,12 @@ function createGround(scene) {
 
         const tree = gltf.scene.clone();
         tree.position.set(x, 0, z);
+        tree.traverse((node) => {
+          if (node.isMesh) {
+            node.castShadow = true;
+            node.receiveShadow = true;
+          }
+        });
         trees.push(tree);
         scene.add(tree);
 
@@ -73,7 +80,7 @@ function createGround(scene) {
     });
   }
 
-  return {updateTreesVisibility, treeBoxes};
+  return { updateTreesVisibility, treeBoxes };
 }
 
-export {createGround};
+export { createGround };

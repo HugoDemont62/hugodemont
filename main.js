@@ -116,19 +116,9 @@ function updateCameraPosition() {
     const modelPosition = new THREE.Vector3();
     model.getWorldPosition(modelPosition);
 
-    if (isFirstPerson) {
-      camera.position.copy(modelPosition).add(new THREE.Vector3(0, 1, 0));
-      model.visible = false;
-    } else {
-      model.visible = true;
-
-      const offset = new THREE.Vector3(0, 2.2, -3);
-      offset.applyQuaternion(model.quaternion);
-      const targetPosition = modelPosition.clone().add(offset);
-      camera.position.lerp(targetPosition, 0.1);
-
-      camera.lookAt(modelPosition);
-    }
+    // Toujours en première personne
+    camera.position.copy(modelPosition).add(new THREE.Vector3(0, 1, 0));
+    model.visible = false;
   }
 }
 
@@ -158,11 +148,6 @@ function animate() {
   updateCameraPosition();
   updateStamina(delta, move.run, move.jump);
   updateTreesVisibility(camera);
-
-  if (move.toggleCamera) {
-    isFirstPerson = !isFirstPerson;
-    move.toggleCamera = false;
-  }
 
   renderer.render(scene, camera);
 

@@ -117,7 +117,6 @@ function updateCameraPosition() {
     const modelPosition = new THREE.Vector3();
     model.getWorldPosition(modelPosition);
 
-    // Toujours en première personne
     camera.position.copy(modelPosition).add(new THREE.Vector3(0, 1, 0));
     model.visible = false;
   }

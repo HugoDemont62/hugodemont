@@ -1,8 +1,9 @@
 let stamina = 100;
 const maxStamina = 100;
-const staminaRegenRate = 10;
-const staminaDrainRate = 20;
+const staminaRegenRate = 30;
+const staminaDrainRate = 10;
 const staminaBar = document.getElementById('stamina-bar');
+let hasJumped = false;
 
 function updateStaminaBar() {
   staminaBar.style.width = `${(stamina / maxStamina) * 100}%`;
@@ -17,8 +18,13 @@ function updateStamina(delta, isRunning, isJumping) {
     if (stamina > maxStamina) stamina = maxStamina;
   }
 
-  if (isJumping && stamina > 0) {
-    stamina -= 30;
+  if (isJumping && !hasJumped && stamina > 0) {
+    stamina -= 20;
+    hasJumped = true;
+  }
+
+  if (!isJumping) {
+    hasJumped = false;
   }
 
   updateStaminaBar();

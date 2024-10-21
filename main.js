@@ -20,6 +20,9 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.shadowMap.enabled = true;
 document.body.appendChild(renderer.domElement);
 
+// Add fog to the scene
+scene.fog = new THREE.FogExp2(0xcccccc, 0.05);
+
 const loader = new THREE.TextureLoader();
 const texture = loader.load('public/sky.jpg', () => {
   const rt = new THREE.WebGLCubeRenderTarget(texture.image.height);

@@ -44,7 +44,6 @@ function createGround(scene) {
   let treeBoxes = [];
 
   treeLoader.load('public/TREE_PURPLEFLOWERS_PSX.glb', (gltf) => {
-    console.log('Tree model loaded:', gltf);
     const groundSize = 1000;
     const spacing = 40;
 
@@ -73,9 +72,6 @@ function createGround(scene) {
         box.setFromCenterAndSize(center, scaledSize);
         treeBoxes.push(box);
 
-        // Create a BoxHelper to visualize the bounding box
-        const boxHelper = new THREE.BoxHelper(tree, 0xff0000); // Red color
-        scene.add(boxHelper);
       }
     }
   });
@@ -86,7 +82,15 @@ function createGround(scene) {
 
     trees.forEach((tree, index) => {
       const distance = cameraPosition.distanceTo(tree.position);
-      tree.visible = distance < 500;
+      const fogDensity = scene.fog.density;
+      const fogFactor = Math.exp(-distance * distance * fogDensity * fogDensity);
+
+      tree.traverse((node) => {
+        if (node.isMesh) {
+          node.material.transparent = true;
+          node.material.opacity = 1 - fogFactor;
+        }
+      });
 
       treeBoxes[index].setFromObject(tree);
     });

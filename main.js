@@ -4,10 +4,11 @@ import * as dat from 'dat.gui';
 import { move, setupControls } from './components/controls.js';
 import { setupLighting } from './components/lighting.js';
 import { loadCharacter } from './components/character.js';
-import { setupStats } from './components/stats.js';
 import { createGround } from './components/ground.js';
 import { updateStamina, canRun, canJump } from './components/stamina.js';
+import { setupStats } from './components/stats.js';
 
+const stats = setupStats();
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100);
 
@@ -139,9 +140,11 @@ document.addEventListener('click', () => {
   document.body.requestPointerLock();
 });
 
-setupStats();
+
 
 function animate() {
+  stats.begin();
+
   const delta = clock.getDelta();
   gravityObjects.forEach(obj => obj.applyGravity(delta));
   updateModelPosition(delta);
@@ -157,7 +160,7 @@ function animate() {
     coordinates.Y = modelPosition.y.toFixed(2);
     coordinates.Z = modelPosition.z.toFixed(2);
   }
-
+  stats.end();
   requestAnimationFrame(animate);
 }
 

@@ -24,6 +24,19 @@ function setupStats() {
   statsMB.dom.style.position = 'absolute';
   statsMB.dom.style.top = '100px';
   statsMB.dom.style.left = '0px';
+
+  return {
+    begin: () => {
+      statsFPS.begin();
+      statsMS.begin();
+      statsMB.begin();
+    },
+    end: () => {
+      statsFPS.end();
+      statsMS.end();
+      statsMB.end();
+    }
+  };
 }
 
 export { setupStats };

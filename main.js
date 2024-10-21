@@ -86,15 +86,22 @@ function updateModelPosition(delta) {
     // Check for collisions with trees
     const modelBox = new THREE.Box3().setFromObject(model);
     let collision = false;
+    let collisionNormal = new THREE.Vector3();
+
     treeBoxes.forEach(box => {
       if (box.intersectsBox(modelBox)) {
         collision = true;
+        const treeCenter = new THREE.Vector3();
+        box.getCenter(treeCenter);
+        collisionNormal.copy(newPosition).sub(treeCenter).normalize();
       }
     });
 
-    if (!collision) {
-      model.position.copy(newPosition);
+    if (collision) {
+      newPosition.add(collisionNormal.multiplyScalar(speed));
     }
+
+    model.position.copy(newPosition);
 
     if (!isFirstPerson && (move.forward || move.backward || move.left || move.right)) {
       const moveDirection = new THREE.Vector3();
@@ -138,8 +145,6 @@ document.addEventListener('mousemove', (event) => {
 document.addEventListener('click', () => {
   document.body.requestPointerLock();
 });
-
-
 
 function animate() {
   stats.begin();

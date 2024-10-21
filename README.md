@@ -1,5 +1,11 @@
 # Hugo Demont - Portfolio 3D interactif
 
+---
+
+[![wakatime](https://wakatime.com/badge/user/14fe3c61-8f4f-4dd2-b75c-eff28a472911/project/d3e04b1b-73f5-4012-a319-665261f7f6ee.svg)](https://wakatime.com/badge/user/14fe3c61-8f4f-4dd2-b75c-eff28a472911/project/d3e04b1b-73f5-4012-a319-665261f7f6ee)
+
+---
+
 ## 🚀 Introduction
 
 Bienvenue sur mon portfolio 3D interactif, conçu pour offrir une expérience immersive et unique. Inspiré par l'esthétique rétro des anciens jeux PSX (PlayStation 1)C'est un projet qui propose un environnement mystérieux et brumeux où les visiteurs doivent explorer pour découvrir mes compétences, projets, et mon parcours professionnel.

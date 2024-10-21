@@ -22,12 +22,6 @@ function setupControls() {
       case 'ShiftLeft':
         move.run = true;
         break;
-      case 'KeyR':
-        if (!cameraTogglePressed) {
-          move.toggleCamera = true;
-          cameraTogglePressed = true;
-        }
-        break;
     }
   });
 
@@ -50,9 +44,6 @@ function setupControls() {
         break;
       case 'ShiftLeft':
         move.run = false;
-        break;
-      case 'KeyR':
-        cameraTogglePressed = false;
         break;
     }
   });

@@ -93,6 +93,9 @@ fontLoader.load('https://threejs.org/examples/fonts/helvetiker_regular.typeface.
   console.error('An error happened while loading the font:', error);
 });
 
+let isJumping = false;
+let shakeIntensity = 0
+
 function updateModelPosition(delta) {
   gravityObjects.forEach(obj => {
     const model = obj.model;
@@ -137,32 +140,73 @@ function updateModelPosition(delta) {
       newPosition.add(collisionNormal.multiplyScalar(speed));
     }
 
+    // Detect landing
+    if (isJumping && obj.model.position.y < 1) {
+      isJumping = false;
+      shakeIntensity = 0.1; // Adjust the intensity as needed
+      // Add camera animation on landing
+      camera.position.y += 0.5; // Adjust the value as needed for the animation effect
+    }
+
     model.position.copy(newPosition);
 
     if (move.jump && canJump()) {
       obj.jump();
+      isJumping = true;
     }
   });
 }
 
-function updateCameraPosition() {
+function applyCameraShake() {
+  if (shakeIntensity > 0) {
+    const shake = new THREE.Vector3(
+        (Math.random() - 0.5) * shakeIntensity,
+        (Math.random() - 0.5) * shakeIntensity,
+        (Math.random() - 0.5) * shakeIntensity
+    );
+    camera.position.add(shake);
+    shakeIntensity *= 0.9; // Dampen the shake over time
+  }
+}
+
+function updateCameraPosition(delta) {
   if (gravityObjects.length > 0) {
     const model = gravityObjects[0].model;
     const modelPosition = new THREE.Vector3();
     model.getWorldPosition(modelPosition);
 
-    camera.position.copy(modelPosition).add(new THREE.Vector3(0, 1, 0));
+    // Recoil effect
+    const recoilIntensity = move.run ? 0.2 : 0.1; // More intense recoil when sprinting
+    const recoil = new THREE.Vector3(0, 0, -recoilIntensity);
+    recoil.applyQuaternion(camera.quaternion);
+
+    // Breathing effect
+    const breathingIntensity = 0.05;
+    const breathing = Math.sin(Date.now() * 0.002) * breathingIntensity;
+
+    const targetPosition = new THREE.Vector3();
+    if (move.forward) {
+      const forwardRecoil = new THREE.Vector3(0, 0, -0.5);
+      forwardRecoil.applyQuaternion(camera.quaternion);
+      targetPosition.copy(modelPosition).add(new THREE.Vector3(0, 1 + breathing, 0)).add(recoil).add(forwardRecoil);
+    } else {
+      targetPosition.copy(modelPosition).add(new THREE.Vector3(0, 1 + breathing, 0)).add(recoil);
+    }
+
+    const smoothFactorFor = 0.5; // Adjust the smoothness factor as needed
+    camera.position.lerp(targetPosition, smoothFactorFor);
+
     model.visible = false;
 
     // Add smooth camera tilt effect
-    const tiltAmount = Math.PI / 16;
+    const tiltAmount = Math.PI / 64;
     const smoothFactor = 0.1;
     if (move.left) {
-      camera.rotation.z += (-tiltAmount - camera.rotation.z) * smoothFactor; // Tilt left
+      camera.rotation.z += (-tiltAmount - camera.rotation.z) * smoothFactor;
     } else if (move.right) {
-      camera.rotation.z += (tiltAmount - camera.rotation.z) * smoothFactor; // Tilt right
+      camera.rotation.z += (tiltAmount - camera.rotation.z) * smoothFactor;
     } else {
-      camera.rotation.z += (0 - camera.rotation.z) * smoothFactor; // Reset tilt
+      camera.rotation.z += (0 - camera.rotation.z) * smoothFactor;
     }
   }
 }
@@ -195,7 +239,7 @@ function animate() {
       animationStartTime = elapsedTime;
     }
 
-    const animationDuration = 15; // Duration in seconds
+    const animationDuration = 5; // Duration in seconds
     const animationProgress = (elapsedTime - animationStartTime) / animationDuration;
 
     if (animationProgress < 1) {
@@ -223,11 +267,12 @@ function animate() {
     updateCameraPosition();
     updateStamina(delta, move.run, move.jump);
     updateTreesVisibility(camera);
+    applyCameraShake();
 
     // Smooth camera rotation
     camera.rotation.order = 'YXZ';
-    camera.rotation.y += (targetCameraRotation.x - camera.rotation.y) * 0.1;
-    camera.rotation.x += (targetCameraRotation.y - camera.rotation.x) * 0.1;
+    camera.rotation.y += (targetCameraRotation.x - camera.rotation.y) * 0.2;
+    camera.rotation.x += (targetCameraRotation.y - camera.rotation.x) * 0.2;
   }
 
   renderer.render(scene, camera);

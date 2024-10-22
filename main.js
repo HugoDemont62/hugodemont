@@ -8,6 +8,8 @@ import { createGround } from './components/ground.js';
 import { updateStamina, canRun, canJump } from './components/stamina.js';
 import { setupStats } from './components/stats.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
+import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js';
 
 const stats = setupStats();
 const scene = new THREE.Scene();
@@ -63,6 +65,32 @@ gltfLoader.load('public/SIMPLE NIPON CASTLE PS1.glb', (gltf) => {
   const castle = gltf.scene;
   castle.position.set(25, 0, 25);
   scene.add(castle);
+});
+
+let welcomeTextMesh;
+const fontLoader = new FontLoader();
+fontLoader.load('https://threejs.org/examples/fonts/helvetiker_regular.typeface.json', (font) => {
+  const textGeometry = new TextGeometry('Welcome to my portfolio!', {
+    font: font,
+    size: 1,
+    height: 0.2,
+    curveSegments: 12,
+    bevelEnabled: true,
+    bevelThickness: 0.03,
+    bevelSize: 0.02,
+    bevelOffset: 0,
+    bevelSegments: 5
+  });
+  const textMaterial = new THREE.MeshStandardMaterial({ color: 0xffffff });
+  welcomeTextMesh = new THREE.Mesh(textGeometry, textMaterial);
+  welcomeTextMesh.position.set(0, 2, -5);
+
+  // Set the rotation of the text
+  welcomeTextMesh.rotation.y = Math.PI / 4;
+
+  scene.add(welcomeTextMesh);
+}, undefined, (error) => {
+  console.error('An error happened while loading the font:', error);
 });
 
 function updateModelPosition(delta) {
@@ -140,9 +168,11 @@ function updateCameraPosition() {
 }
 
 let targetCameraRotation = new THREE.Vector2();
+let isAnimating = true;
+let animationStartTime = null;
 
 document.addEventListener('mousemove', (event) => {
-  if (document.pointerLockElement) {
+  if (document.pointerLockElement && !isAnimating) {
     targetCameraRotation.x -= event.movementX * 0.001;
     targetCameraRotation.y -= event.movementY * 0.001;
 
@@ -158,16 +188,47 @@ function animate() {
   stats.begin();
 
   const delta = clock.getDelta();
-  gravityObjects.forEach(obj => obj.applyGravity(delta));
-  updateModelPosition(delta);
-  updateCameraPosition();
-  updateStamina(delta, move.run, move.jump);
-  updateTreesVisibility(camera);
+  const elapsedTime = clock.getElapsedTime();
 
-  // Smooth camera rotation
-  camera.rotation.order = 'YXZ';
-  camera.rotation.y += (targetCameraRotation.x - camera.rotation.y) * 0.1;
-  camera.rotation.x += (targetCameraRotation.y - camera.rotation.x) * 0.1;
+  if (isAnimating) {
+    if (!animationStartTime) {
+      animationStartTime = elapsedTime;
+    }
+
+    const animationDuration = 15; // Duration in seconds
+    const animationProgress = (elapsedTime - animationStartTime) / animationDuration;
+
+    if (animationProgress < 1) {
+      // Define the camera path
+      const startPosition = new THREE.Vector3(50, 50, 0);
+      const endPosition = new THREE.Vector3(0, 1, 0);
+      camera.position.lerpVectors(startPosition, endPosition, animationProgress);
+
+      // Look at the character
+      if (gravityObjects.length > 0) {
+        const model = gravityObjects[0].model;
+        const modelPosition = new THREE.Vector3();
+        model.getWorldPosition(modelPosition);
+        camera.lookAt(modelPosition);
+      }
+    } else {
+      isAnimating = false;
+      if (welcomeTextMesh) {
+        scene.remove(welcomeTextMesh);
+      }
+    }
+  } else {
+    gravityObjects.forEach(obj => obj.applyGravity(delta));
+    updateModelPosition(delta);
+    updateCameraPosition();
+    updateStamina(delta, move.run, move.jump);
+    updateTreesVisibility(camera);
+
+    // Smooth camera rotation
+    camera.rotation.order = 'YXZ';
+    camera.rotation.y += (targetCameraRotation.x - camera.rotation.y) * 0.1;
+    camera.rotation.x += (targetCameraRotation.y - camera.rotation.x) * 0.1;
+  }
 
   renderer.render(scene, camera);
 

@@ -7,6 +7,7 @@ import { loadCharacter } from './components/character.js';
 import { createGround } from './components/ground.js';
 import { updateStamina, canRun, canJump } from './components/stamina.js';
 import { setupStats } from './components/stats.js';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 const stats = setupStats();
 const scene = new THREE.Scene();
@@ -60,6 +61,12 @@ setupControls();
 
 const clock = new THREE.Clock();
 
+const gltfLoader = new GLTFLoader();
+gltfLoader.load('public/SIMPLE NIPON CASTLE PS1.glb', (gltf) => {
+  const castle = gltf.scene;
+  castle.position.set(25, 0, 25);
+  scene.add(castle);
+});
 function updateModelPosition(delta) {
   gravityObjects.forEach(obj => {
     const model = obj.model;

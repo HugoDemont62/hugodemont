@@ -45,11 +45,13 @@ function createGround(scene) {
 
   treeLoader.load('public/TREE_PURPLEFLOWERS_PSX.glb', (gltf) => {
     const groundSize = 1000;
-    const spacing = 40;
+    const spacing = 20;
+    const exclusionRadius = 80;
 
     for (let x = -groundSize / 2; x <= groundSize / 2; x += spacing) {
       for (let z = -groundSize / 2; z <= groundSize / 2; z += spacing) {
-        if (x === 0 && z === 0) continue;
+
+        if (Math.sqrt(x * x + z * z) < exclusionRadius) continue;
 
         const tree = gltf.scene.clone();
         tree.position.set(x, 0, z);
@@ -71,7 +73,6 @@ function createGround(scene) {
         box.getCenter(center);
         box.setFromCenterAndSize(center, scaledSize);
         treeBoxes.push(box);
-
       }
     }
   });

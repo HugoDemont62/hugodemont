@@ -55,7 +55,7 @@ L'objectif de ce projet est de sortir des sentiers battus des portfolios classiq
    
 #### 2. **Scène 3D dans Three.js**
    - [x] Importer les objets 3D dans la scène.
-   - [ ] Configurer la caméra et les contrôles pour permettre la navigation.
+   - [x] Configurer la caméra et les contrôles pour permettre la navigation.
    - [ ] Ajouter des animations (comme les interactions avec les objets).
    - [ ] Affiner l’effet de brume (intensité et distance).
 

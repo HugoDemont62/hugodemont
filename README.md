@@ -54,13 +54,13 @@ L'objectif de ce projet est de sortir des sentiers battus des portfolios classiq
    - [ ] Optimiser les UV maps pour minimiser la taille des fichiers.
    
 #### 2. **Scène 3D dans Three.js**
-   - [x] Importer les objets 3D dans la scène.
-   - [x] Configurer la caméra et les contrôles pour permettre la navigation.
+   - [ ] Importer les objets 3D dans la scène.
+   - [ ] Configurer la caméra et les contrôles pour permettre la navigation.
    - [ ] Ajouter des animations (comme les interactions avec les objets).
    - [ ] Affiner l’effet de brume (intensité et distance).
 
 #### 3. **Shaders et effets visuels**
-   - [x] Implémenter le shader de brume.
+   - [ ] Implémenter le shader de brume.
    - [ ] Créer des ombres dynamiques pour les objets de la scène.
    - [ ] Ajouter un shader pour l’effet de lumière PSX (lumière simple et pixellisée).
 
